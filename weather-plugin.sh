@@ -5,7 +5,7 @@
 # API settings ________________________________________________________________
 
 APIKEY=`cat $HOME/.owm-key`
-CITY_NAME='Roma'
+CITY_NAME='Rome'
 COUNTRY_CODE='IT'
 # Desired output language
 LANG="en"
@@ -36,7 +36,7 @@ COLOR_WIND="#73cef4"
 COLOR_COLD="#b3deef"
 COLOR_HOT="#f43753"
 COLOR_NORMAL_TEMP="#FFFFFF"
-COLOR_TEXT="#bdae93"
+COLOR_TEXT="#FFFFFF"
 # Polybar settings ____________________________________________________________
 
 # Font for the weather icons
@@ -51,7 +51,7 @@ TEMP_FONT_CODE=2
 DISPLAY_WIND="yes"
 
 # Display in knots. yes/no
-KNOTS="no"
+KNOTS="yes"
 
 # How many decimals after the floating point
 DECIMALS=0

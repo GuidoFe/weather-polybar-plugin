@@ -1,5 +1,3 @@
-
-  
 #!/bin/bash
 
 # SETTINGS vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -7,7 +5,7 @@
 # API settings ________________________________________________________________
 
 APIKEY=`cat $HOME/.owm-key`
-CITY_NAME='Rome'
+CITY_NAME='Roma'
 COUNTRY_CODE='IT'
 # Desired output language
 LANG="en"
@@ -38,7 +36,7 @@ COLOR_WIND="#73cef4"
 COLOR_COLD="#b3deef"
 COLOR_HOT="#f43753"
 COLOR_NORMAL_TEMP="#FFFFFF"
-
+COLOR_TEXT="#bdae93"
 # Polybar settings ____________________________________________________________
 
 # Font for the weather icons
@@ -53,7 +51,7 @@ TEMP_FONT_CODE=2
 DISPLAY_WIND="yes"
 
 # Display in knots. yes/no
-KNOTS="yes"
+KNOTS="no"
 
 # How many decimals after the floating point
 DECIMALS=0
@@ -220,14 +218,14 @@ function setIcons {
     if [ "$DISPLAY_WIND" = "yes" ] && [ `echo "$WINDFORCE >= $MIN_WIND" |bc -l` -eq 1 ]; then
         WIND="%{T$WEATHER_FONT_CODE}%{F$COLOR_WIND}%{F-}%{T-}"
         if [ $DISPLAY_FORCE = "yes" ]; then
-            WIND="$WIND $WINDFORCE"
+            WIND="$WIND %{F$COLOR_TEXT}$WINDFORCE%{F-}"
             if [ $DISPLAY_WIND_UNIT = "yes" ]; then
                 if [ $KNOTS = "yes" ]; then
-                    WIND="$WIND kn"
+                    WIND="$WIND %{F$COLOR_TEXT}kn%{F-}"
                 elif [ $UNITS = "imperial" ]; then
-                    WIND="$WIND mph"
+                    WIND="$WIND %{F$COLOR_TEXT}mph%{F-}"
                 else
-                    WIND="$WIND km/h"
+                    WIND="$WIND %{F$COLOR_TEXT}km/h%{F-}"
                 fi
             fi
         fi
@@ -244,16 +242,16 @@ function setIcons {
     TEMP=`echo "$TEMP" | cut -d "." -f 1`
     
     if [ "$TEMP" -le $COLD_TEMP ]; then
-        TEMP="%{F$COLOR_COLD}%{T$TEMP_FONT_CODE}%{T-}%{F-} $TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}"
+        TEMP="%{F$COLOR_COLD}%{T$TEMP_FONT_CODE}%{T-}%{F-} %{F$COLOR_TEXT}$TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}%{F-}"
     elif [ `echo "$TEMP >= $HOT_TEMP" | bc` -eq 1 ]; then
-        TEMP="%{F$COLOR_HOT}%{T$TEMP_FONT_CODE}%{T-}%{F-} $TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}"
+        TEMP="%{F$COLOR_HOT}%{T$TEMP_FONT_CODE}%{T-}%{F-} %{F$COLOR_TEXT}$TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}%{F-}"
     else
-        TEMP="%{F$COLOR_NORMAL_TEMP}%{T$TEMP_FONT_CODE}%{T-}%{F-} $TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}"
+        TEMP="%{F$COLOR_NORMAL_TEMP}%{T$TEMP_FONT_CODE}%{T-}%{F-} %{F$COLOR_TEXT}$TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}%{F-}"
     fi
 }
 
 function outputCompact {
-    OUTPUT="$WIND %{T$WEATHER_FONT_CODE}%{F$ICON_COLOR}$ICON%{F-}%{T-} $ERR_MSG$DESCRIPTION| $TEMP"
+    OUTPUT="$WIND %{T$WEATHER_FONT_CODE}%{F$ICON_COLOR}$ICON%{F-}%{T-} $ERR_MSG%{F$COLOR_TEXT}$DESCRIPTION%{F-}| $TEMP"
     # echo "Output: $OUTPUT" >> "$HOME/.weather.log"
     echo "$OUTPUT"
 }

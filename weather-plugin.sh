@@ -1,5 +1,5 @@
 
-  
+
 #!/bin/bash
 
 # SETTINGS vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -39,6 +39,8 @@ COLOR_COLD="#b3deef"
 COLOR_HOT="#f43753"
 COLOR_NORMAL_TEMP="#FFFFFF"
 
+# Leave "" if you want the default polybar color
+COLOR_TEXT=""
 # Polybar settings ____________________________________________________________
 
 # Font for the weather icons
@@ -87,8 +89,10 @@ DISPLAY_LABEL="yes"
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
-
+if [ "$COLOR_TEXT" != "" ]; then
+    COLOR_TEXT_BEGIN="%{F$COLOR_TEXT}"
+    COLOR_TEXT_END="%{F-}"
+fi
 
 RESPONSE=""
 ERROR=0
@@ -220,14 +224,14 @@ function setIcons {
     if [ "$DISPLAY_WIND" = "yes" ] && [ `echo "$WINDFORCE >= $MIN_WIND" |bc -l` -eq 1 ]; then
         WIND="%{T$WEATHER_FONT_CODE}%{F$COLOR_WIND}%{F-}%{T-}"
         if [ $DISPLAY_FORCE = "yes" ]; then
-            WIND="$WIND $WINDFORCE"
+            WIND="$WIND $COLOR_TEXT_BEGIN$WINDFORCE$COLOR_TEXT_END"
             if [ $DISPLAY_WIND_UNIT = "yes" ]; then
                 if [ $KNOTS = "yes" ]; then
-                    WIND="$WIND kn"
+                    WIND="$WIND ${COLOR_TEXT_BEGIN}kn$COLOR_TEXT_END"
                 elif [ $UNITS = "imperial" ]; then
-                    WIND="$WIND mph"
+                    WIND="$WIND ${COLOR_TEXT_BEGIN}mph$COLOR_TEXT_END"
                 else
-                    WIND="$WIND km/h"
+                    WIND="$WIND ${COLOR_TEXT_BEGIN}km/h$COLOR_TEXT_END"
                 fi
             fi
         fi
@@ -244,16 +248,16 @@ function setIcons {
     TEMP=`echo "$TEMP" | cut -d "." -f 1`
     
     if [ "$TEMP" -le $COLD_TEMP ]; then
-        TEMP="%{F$COLOR_COLD}%{T$TEMP_FONT_CODE}%{T-}%{F-} $TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}"
+        TEMP="%{F$COLOR_COLD}%{T$TEMP_FONT_CODE}%{T-}%{F-} $COLOR_TEXT_BEGIN$TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}$COLOR_TEXT_END"
     elif [ `echo "$TEMP >= $HOT_TEMP" | bc` -eq 1 ]; then
-        TEMP="%{F$COLOR_HOT}%{T$TEMP_FONT_CODE}%{T-}%{F-} $TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}"
+        TEMP="%{F$COLOR_HOT}%{T$TEMP_FONT_CODE}%{T-}%{F-} $COLOR_TEXT_BEGIN$TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}$COLOR_TEXT_END"
     else
-        TEMP="%{F$COLOR_NORMAL_TEMP}%{T$TEMP_FONT_CODE}%{T-}%{F-} $TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}"
+        TEMP="%{F$COLOR_NORMAL_TEMP}%{T$TEMP_FONT_CODE}%{T-}%{F-} $COLOR_TEXT_BEGIN$TEMP%{T$TEMP_FONT_CODE}$TEMP_ICON%{T-}$COLOR_TEXT_END"
     fi
 }
 
 function outputCompact {
-    OUTPUT="$WIND %{T$WEATHER_FONT_CODE}%{F$ICON_COLOR}$ICON%{F-}%{T-} $ERR_MSG$DESCRIPTION| $TEMP"
+    OUTPUT="$WIND %{T$WEATHER_FONT_CODE}%{F$ICON_COLOR}$ICON%{F-}%{T-} $ERR_MSG$COLOR_TEXT_BEGIN$DESCRIPTION$COLOR_TEXT_END| $TEMP"
     # echo "Output: $OUTPUT" >> "$HOME/.weather.log"
     echo "$OUTPUT"
 }

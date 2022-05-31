@@ -108,6 +108,10 @@ function getData {
     # echo " " >> "$HOME/.weather.log"
     # echo `date`" ################################" >> "$HOME/.weather.log"
     RESPONSE=`curl -s $URL`
+    if [ "$1" = "-d" ]; then
+        echo $RESPONSE
+        echo ""
+    fi
     CODE="$?"
     # echo "Response: $RESPONSE" >> "$HOME/.weather.log"
     RESPONSECODE=0
@@ -260,7 +264,7 @@ function outputCompact {
     echo "$OUTPUT"
 }
 
-getData
+getData $1
 if [ $ERROR -eq 0 ]; then
     MAIN=`echo $RESPONSE | jq .weather[0].main`
     WID=`echo $RESPONSE | jq .weather[0].id`

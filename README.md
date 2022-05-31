@@ -37,3 +37,6 @@ Set WEATHER_FONT_CODE to the polybar font you want to use to display the weather
 
 You can change the text language by setting the LANG variable. You can find the available languages and their codes at https://openweathermap.org/current#list
 
+## Debugging
+Run `weather-plugin.sh -d` in the terminal in order to see the raw api response
+

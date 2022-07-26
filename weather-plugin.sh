@@ -5,6 +5,7 @@
 # API settings ________________________________________________________________
 
 APIKEY=`cat $HOME/.owm-key`
+# if you leave these empty location will be picked based on your ip-adres
 CITY_NAME='Rome'
 COUNTRY_CODE='IT'
 # Desired output language
@@ -90,6 +91,13 @@ DISPLAY_LABEL="yes"
 if [ "$COLOR_TEXT" != "" ]; then
     COLOR_TEXT_BEGIN="%{F$COLOR_TEXT}"
     COLOR_TEXT_END="%{F-}"
+fi
+if [ -z "$CITY_NAME" ]; then
+    tss=`curl -s ifconfig.me`  # == ip%
+    IP=${tss::-1}              # == ip
+    IPCURL=$(curl -s https://ipinfo.io/$IP)
+    CITY_NAME=$(echo $IPCURL | jq -r ".city")
+    COUNTRY_CODE=$(echo $IPCURL | jq -r ".country")
 fi
 
 RESPONSE=""

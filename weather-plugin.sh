@@ -53,6 +53,9 @@ TEMP_FONT_CODE=2
 # Display info about the wind or not. yes/no
 DISPLAY_WIND="yes"
 
+# Show beaufort level in windicon
+BEAUFORTICON="yes"
+
 # Display in knots. yes/no
 KNOTS="yes"
 
@@ -213,6 +216,37 @@ function setIcons {
     fi
     WIND=""
     WINDFORCE=`echo "$RESPONSE" | jq .wind.speed`
+    WINDICON=""
+    if [ $BEAUFORTICON == "yes" ];then
+        WINDFORCE2=`echo "scale=$DECIMALS;$WINDFORCE * 3.6 / 1" | bc`
+        if [ $WINDFORCE2 -le 1 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 1 ] && [ $WINDFORCE2 -le 5 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 5 ] && [ $WINDFORCE2 -le 11 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 11 ] && [ $WINDFORCE2 -le 19 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 19 ] && [ $WINDFORCE2 -le 28 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 28 ] && [ $WINDFORCE2 -le 38 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 38 ] && [ $WINDFORCE2 -le 49 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 49 ] && [ $WINDFORCE2 -le 61 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 61 ] && [ $WINDFORCE2 -le 74 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 74 ] && [ $WINDFORCE2 -le 88 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 88 ] && [ $WINDFORCE2 -le 102 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 102 ] && [ $WINDFORCE2 -le 117 ]; then
+            WINDICON=""
+        elif [ $WINDFORCE2 -gt 117 ]; then
+            WINDICON=""
+        fi
+    fi
     if [ $KNOTS = "yes" ]; then
         case $UNITS in
             "imperial") 
@@ -232,7 +266,7 @@ function setIcons {
         fi
     fi
     if [ "$DISPLAY_WIND" = "yes" ] && [ `echo "$WINDFORCE >= $MIN_WIND" |bc -l` -eq 1 ]; then
-        WIND="%{T$WEATHER_FONT_CODE}%{F$COLOR_WIND}%{F-}%{T-}"
+        WIND="%{T$WEATHER_FONT_CODE}%{F$COLOR_WIND}$WINDICON%{F-}%{T-}"
         if [ $DISPLAY_FORCE = "yes" ]; then
             WIND="$WIND $COLOR_TEXT_BEGIN$WINDFORCE$COLOR_TEXT_END"
             if [ $DISPLAY_WIND_UNIT = "yes" ]; then

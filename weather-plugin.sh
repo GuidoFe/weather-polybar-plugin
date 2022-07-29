@@ -96,8 +96,7 @@ if [ "$COLOR_TEXT" != "" ]; then
     COLOR_TEXT_END="%{F-}"
 fi
 if [ -z "$CITY_NAME" ]; then
-    tss=`curl -s ifconfig.me`  # == ip%
-    IP=${tss::-1}              # == ip
+    IP=`curl -s ifconfig.me`  # == ip
     IPCURL=$(curl -s https://ipinfo.io/$IP)
     CITY_NAME=$(echo $IPCURL | jq -r ".city")
     COUNTRY_CODE=$(echo $IPCURL | jq -r ".country")

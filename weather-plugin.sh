@@ -118,17 +118,17 @@ function getData {
     # echo " " >> "$HOME/.weather.log"
     # echo `date`" ################################" >> "$HOME/.weather.log"
     RESPONSE=`curl -s $URL`
+    CODE="$?"
     if [ "$1" = "-d" ]; then
         echo $RESPONSE
         echo ""
     fi
-    CODE="$?"
     # echo "Response: $RESPONSE" >> "$HOME/.weather.log"
     RESPONSECODE=0
     if [ $CODE -eq 0 ]; then
         RESPONSECODE=`echo $RESPONSE | jq .cod`
     fi
-    if [ $CODE -ne 0 ] || [ $RESPONSECODE -ne 200 ]; then
+    if [ $CODE -ne 0 ] || [ ${RESPONSECODE:=429} -ne 200 ]; then
         if [ $CODE -ne 0 ]; then
             ERR_MSG="curl Error $CODE"
             # echo "curl Error $CODE" >> "$HOME/.weather.log"

@@ -4,7 +4,7 @@ Weather plugin for the polybar panel
 ![preview](https://raw.githubusercontent.com/GuidoFe/weather-polybar-plugin/main/preview.png)
 
 ## Description
-This Polybar plugin uses OpenWeather API to get and display information about the current weather, including the type of event (clear, moderate rain, fog etc.), temperature (Celsious, Fahrenheit or Kelvin) and an alert for strong winds. The icons change accordingly with the local sunrise and sunset times. 
+This Polybar plugin uses OpenWeather API to get and display information about the current weather, including the type of event (clear, moderate rain, fog etc.), temperature (Celsius, Fahrenheit or Kelvin) and an alert for strong winds. The icons change accordingly with the local sunrise and sunset times. 
 
 The colors are easily customizable via constants defined at the beginning of the script.
 

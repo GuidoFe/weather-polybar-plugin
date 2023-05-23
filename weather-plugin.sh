@@ -281,11 +281,11 @@ function setIcons {
         WIND="$WIND |"
     fi
     if [ "$UNITS" = "metric" ]; then
-        TEMP_ICON="糖"
+        TEMP_ICON="󰔄"
     elif [ "$UNITS" = "imperial" ]; then
-        TEMP_ICON="宅"
+        TEMP_ICON="󰔅"
     else
-        TEMP_ICON="洞"
+        TEMP_ICON="󰔆"
     fi
     
     TEMP=`echo "$TEMP" | cut -d "." -f 1`

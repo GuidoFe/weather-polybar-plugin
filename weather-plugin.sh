@@ -34,6 +34,7 @@ COLOR_SUN="#ffc24b"
 COLOR_MOON="#FFFFFF"
 COLOR_ERR="#f43753"
 COLOR_WIND="#73cef4"
+COLOR_WIND_DIRECTION="#f43753"
 COLOR_COLD="#b3deef"
 COLOR_HOT="#f43753"
 COLOR_NORMAL_TEMP="#FFFFFF"
@@ -75,6 +76,9 @@ DISPLAY_FORCE="yes"
 
 # Display the wind unit if wind force is displayed. yes/no
 DISPLAY_WIND_UNIT="yes"
+
+#Display the wind direction if wind force is displayed. yes/no
+DISPLAY_WIND_DIRECTION="yes"
 
 # Thermometer settings ________________________________________________________
 
@@ -278,6 +282,26 @@ function setIcons {
                 fi
             fi
         fi
+	if [ $DISPLAY_WIND_DIRECTION = "yes" ]; then
+		WIND_DEG=`echo "$RESPONSE" | jq .wind.deg`
+		WIND_DIRECTION_ICON=""
+		if [ $WIND_DEG -ge 24 ] && [ $WIND_DEG -le 68 ]; then
+			WIND_DIRECTION_ICON="󱦶"
+		elif [ $WIND_DEG -ge 69 ] && [ $WIND_DEG -le 113 ]; then
+			WIND_DIRECTION_ICON=""
+		elif [ $WIND_DEG -ge 114 ] && [ $WIND_DEG -le 158 ]; then
+			WIND_DIRECTION_ICON="󱦵"
+		elif [ $WIND_DEG -ge 159 ] && [ $WIND_DEG -le 203 ]; then
+			WIND_DIRECTION_ICON=""
+		elif [ $WIND_DEG -ge 204 ] && [ $WIND_DEG -le 248 ]; then
+			WIND_DIRECTION_ICON="󱦴"
+		elif [ $WIND_DEG -ge 249 ] && [ $WIND_DEG -le 293 ]; then
+			WIND_DIRECTION_ICON=""
+		elif [ $WIND_DEG -ge 294 ] && [ $WIND_DEG -le 336 ]; then
+			WIND_DIRECTION_ICON="󱦷"
+		fi		
+		WIND="$WIND %{T$WEATHER_FONT_CODE}%{F$COLOR_WIND_DIRECTION}$WIND_DIRECTION_ICON%{F-}%{T-}"	
+	fi
         WIND="$WIND |"
     fi
     if [ "$UNITS" = "metric" ]; then
